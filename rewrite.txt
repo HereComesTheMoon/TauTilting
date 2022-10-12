@@ -1,0 +1,10 @@
+1. Have a single wrapper gap file
+2. This wrapper file takes as input a folder, and a bound on the number of vertices
+3. It enters the folder, and checks if a "ComputeAlgebra.gap" file exists there. If not, terminates
+4. If yes, read it in and create an algebra file in the folder. 
+5. Then read it back in, and compute all modules and the relationships
+6. Then store all that data in a JSON file. 
+
+7. Go can read that file in, and do the remaining computations, and store those in the same folder
+8. Python can do the remaining computations and verification
+9. Maybe write a C-in-Python program to replace the go code
