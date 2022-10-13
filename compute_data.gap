@@ -36,7 +36,7 @@ ComputeAlgebrasModK := function(folder, n, K)
         Exec(Concatenation("mkdir ", folderInner));
     fi;
 
-    for nn in [2..n] do
+    for nn in [1..n] do
         ComputeAlgebra(folder, nn, K);
     od;
 end;
@@ -77,14 +77,12 @@ ComputeAlgebra := function(folder, n, K)
                 proj_dim := 0,
                 inj_dim := 0,
                 dim_vector := DimensionVector(proj[1]),
+                row := [1],
             )];
-        tau_rigidity_matrix := [[1]];
     else 
         orbits := ComputeOrbits(proj);
 
         data := ComputeModuleDataFromOrbits(orbits);
-
-        tau_rigidity_matrix := ComputeTauRigidityMatrix(orbits);
     fi;
 
     data_algebra := rec(
@@ -97,8 +95,7 @@ ComputeAlgebra := function(folder, n, K)
 
     results := rec(
         algebra := data_algebra,
-        modules := data,
-        tau_rigidity_matrix := tau_rigidity_matrix,
+        indecomposables := data,
     );
 
     out_stream := OutputTextFile(Filename(Directory(folderInner), Concatenation("data_", String(n), ".json")), false);
@@ -136,15 +133,20 @@ ComputeOrbits := function(orbitReps)
 end;
 
 ComputeModuleDataFromOrbits := function(orbits)
-    local id, moduleData, pdim, idim, orbit, orbit_counter, orbit_position, result_record, module, dimv;
+    local id, moduleData, pdim, idim, orbit, orbit_counter, orbit_position, result_record, module, dimv, row, modulesFlattened, N;
 	moduleData := [];
 
     id := 1;
+
+    modulesFlattened := Flat(orbits);
 
     orbit_counter := 1;
     for orbit in orbits do 
         orbit_position := 0;
         for module in orbit do 
+            if module <> modulesFlattened[id] then
+                Error("");
+            fi;
 			pdim := ProjDimensionOfModule(module, 2*Length(orbits));
 			idim := InjDimensionOfModule(module, 2*Length(orbits));
             if pdim = false then
@@ -156,6 +158,18 @@ ComputeModuleDataFromOrbits := function(orbits)
                 idim := -1;
             fi;
 
+            row := [];
+
+            for N in modulesFlattened do
+                if HomOverAlgebra(module, DTr(N,1)) = [ ] then
+                    Add(row, 1); # Flipped from old code
+                else 
+                    Add(row, 0);
+                fi;
+            od;
+
+
+
             result_record := rec(
                 id := id,
                 orbit := orbit_counter,
@@ -163,6 +177,7 @@ ComputeModuleDataFromOrbits := function(orbits)
                 proj_dim := pdim,
                 inj_dim := idim,
                 dim_vector := DimensionVector(module),
+                row := row,
             );
 
             Add(moduleData, result_record);
@@ -178,6 +193,7 @@ end;
 
 
 # Adjacency matrix whose (i,j) entry is 1 iff M_i \oplus M_j is tau-rigid, otherwise 0. M_i is the indecomposable module with id i.
+# Currently not used!
 ComputeTauRigidityMatrix := function(orbits)
     local matrixSize, matrix, k, M, N, modules;
 
