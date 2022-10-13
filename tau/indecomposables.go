@@ -5,20 +5,6 @@ import (
 	"log"
 )
 
-// Refactorisation:
-// Main functions:
-// 1. enumerateTauForAlgebra([][]int rigidityMatrix, [][]int dimensionVectors, int numberThreads, int granularity)
-//Have a few checks that rigidityMatrix and dimensionVectors match at all
-//2. Same as above, but given some file location, append to the corresponding output file
-//3. Actually return a slice containing all tau-tilting modules
-//For this might as well implement an 'indecomposable' struct, containing the same information as the python and gap scripts, ie. id, dimension vector, orbit, orbit_representative
-
-// Clique object
-//type Clique struct {
-//vertices []int
-//cnbrs []int
-//dimv uint
-//}
 
 type Indecomposable struct {
     Id int // id, for bookkeeping purposes
@@ -160,32 +146,3 @@ func (alg Algebra) SanityCheck() bool {
     return passed
 }
 
-
-//func Get_indecomposables(folder string, number_vertices int) AllIndecomposables {
-    //loc := folder + "/alg_" + fmt.Sprint(number_vertices)
-
-    //dimvs := ReadCsvToSlice(loc + "_dimv.csv")
-    //module_data := ReadCsvToSlice(loc + "_modules.csv")
-    //tau_rigidity_matrix := ReadCsvToSlice(loc + "_rigiditymatrix.csv")
-
-    //if len(dimvs) != len(module_data) {
-        //log.Fatalf("%v != %v\n", len(dimvs), len(module_data))
-    //}
-
-    //modules := make(AllIndecomposables, 0, len(dimvs))
-
-    //for i := range dimvs {
-        //indec := Indecomposable{
-            //Id: i,
-            //Dim_vector: dimvs[i],
-            //Orbit: module_data[i][0],
-            //Orbit_position: module_data[i][1],
-            //Proj_dim: module_data[i][2],
-            //Inj_dim: module_data[i][3],
-            //Tau_rigidity_row: tau_rigidity_matrix[i],
-        //}
-        //modules = append(modules, indec)
-    //}
-
-    //return modules
-//}

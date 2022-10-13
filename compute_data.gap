@@ -14,11 +14,11 @@ ComputeAlgebrasUpTo := function(folder, n, K)
     fi;
 
     for k in [2..K] do 
-        ComputeAlgebrasModK(folder, n, k);
+        ComputeAlgebrasModK(folder, 1, n, k);
     od;
 end;
 
-ComputeAlgebrasModK := function(folder, n, K)
+ComputeAlgebrasModK := function(folder, lower_n, upper_n, K)
     local k, nn, folderInner;
 
     if not IsDirectoryPath(folder) then
@@ -36,7 +36,7 @@ ComputeAlgebrasModK := function(folder, n, K)
         Exec(Concatenation("mkdir ", folderInner));
     fi;
 
-    for nn in [1..n] do
+    for nn in [lower_n..upper_n] do
         ComputeAlgebra(folder, nn, K);
     od;
 end;
@@ -216,3 +216,6 @@ ComputeTauRigidityMatrix := function(orbits)
 
     return matrix;
 end;
+
+Print("Needs: A file comp.gap in a folder (eg. ./data/alg_name/comp.gap), which contains a single function comp(n, K), which takes two integers and returns an algebra with n vertices. K generally refers to the highest power of the arrow ideal that is factored out.\n\n");
+Print("Call ComputeAlgebrasModK(folder, lower_n, upper_n, K) to compute alg_n.gap, data_n.json for all values of n in the range, and put these files in ./data/alg_name/ModK/.");

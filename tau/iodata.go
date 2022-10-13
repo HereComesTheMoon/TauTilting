@@ -127,7 +127,7 @@ func initialiseResultsFile(folder string) {
         _, err := os.Stat(next_file_path)
 
         if errors.Is(err, os.ErrNotExist) { continue }
-        if err != nil { log.Fatalf("Oh no! %w", err) }
+        if err != nil { log.Fatalf("Oh no! %v", err) }
 
         break
     }
