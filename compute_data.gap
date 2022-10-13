@@ -168,7 +168,7 @@ ComputeModuleDataFromOrbits := function(orbits)
 
 
             result_record := rec(
-                id := id,
+                id := id - 1, # Zero-indexing
                 orbit := orbit_counter,
                 orbit_position := orbit_position,
                 proj_dim := pdim,
