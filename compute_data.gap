@@ -177,7 +177,7 @@ ComputeModuleDataFromOrbits := function(orbits)
                 proj_dim := pdim,
                 inj_dim := idim,
                 dim_vector := DimensionVector(module),
-                row := row,
+                tau_rigidity_row := row,
             );
 
             Add(moduleData, result_record);

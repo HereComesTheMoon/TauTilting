@@ -35,11 +35,10 @@ type Indecs struct {
 
 type dataBlock struct {
     Algebra Algebra
-    Modules []Indecs
-    Matrix [][]bool
+    Indecomposables []Indecomposable
 }
 
-func ReadJson(location string) {
+func ReadJsonData(location string) {
     f, err := os.Open(location)
 
     if err != nil {
@@ -49,72 +48,88 @@ func ReadJson(location string) {
     dec := json.NewDecoder(f)
 
     chunk := dataBlock{}
-    //alg := Algebra{}
 
-    t, err := dec.Token()
-    if err != nil { log.Fatal(err) }
-    if t != json.Delim('{') { log.Fatalf("Got: '%v' of type %T. Expected: '{'", t, t)}
+    dec.Decode(&chunk)
 
-    t, err = dec.Token()
-    if err != nil { log.Fatal(err) }
-    if t != "algebra" { log.Fatalf("Got: '%v' of type %T. Expected: 'algebra'", t, t)}
+    fmt.Printf("%+v", chunk)
+}
 
-    dec.Decode(&chunk.Algebra)
-    //fmt.Printf("%+v\n", chunk.Algebra)
-
-    t, err = dec.Token()
-    if err != nil { log.Fatal(err) }
-    if t != "modules" { log.Fatalf("Got: '%v' of type %T. Expected: 'modules'", t, t)}
-
-    chunk.Modules = make([]Indecs, 0, chunk.Algebra.Number_modules)
-
-    for i := 0; i < chunk.Algebra.Number_modules; i++ {
-        
-    }
-    dec.Decode(&chunk.Modules)
-    fmt.Printf("%+v\n", chunk.Modules)
-
-    //for i := 0; i < 2; i++ {
-        //t, err := dec.Token()
-        //if err != nil { log.Fatal(err) }
-        //fmt.Printf("%T: %v\n", t, t)
-    //}
-
-
-    //var alg_data Algebra
-    //err = dec.Decode(&alg_data)
+//func ReadJson(location string) {
+    //f, err := os.Open(location)
 
     //if err != nil {
         //log.Fatal(err)
     //}
 
+    //dec := json.NewDecoder(f)
+
+    //chunk := dataBlock{}
+    ////alg := Algebra{}
+
+    //t, err := dec.Token()
+    //if err != nil { log.Fatal(err) }
+    //if t != json.Delim('{') { log.Fatalf("Got: '%v' of type %T. Expected: '{'", t, t)}
+
+    //t, err = dec.Token()
+    //if err != nil { log.Fatal(err) }
+    //if t != "algebra" { log.Fatalf("Got: '%v' of type %T. Expected: 'algebra'", t, t)}
+
+    //dec.Decode(&chunk.Algebra)
+    ////fmt.Printf("%+v\n", chunk.Algebra)
+
+    //t, err = dec.Token()
+    //if err != nil { log.Fatal(err) }
+    //if t != "modules" { log.Fatalf("Got: '%v' of type %T. Expected: 'modules'", t, t)}
+
+    ////chunk.Modules = make([]Indecs, 0, chunk.Algebra.Number_modules)
+
+    ////for i := 0; i < chunk.Algebra.Number_modules; i++ {
+        
+    ////}
+    ////dec.Decode(&chunk.Modules)
+    ////fmt.Printf("%+v\n", chunk.Modules)
+
+    ////for i := 0; i < 2; i++ {
+        ////t, err := dec.Token()
+        ////if err != nil { log.Fatal(err) }
+        ////fmt.Printf("%T: %v\n", t, t)
+    ////}
+
+
+    ////var alg_data Algebra
+    ////err = dec.Decode(&alg_data)
+
+    ////if err != nil {
+        ////log.Fatal(err)
+    ////}
+
     
-    //fmt.Printf("%v", alg_data)
-}
+    ////fmt.Printf("%v", alg_data)
+//}
 
-func ReadJson2() {
-    const rawTest = `{"algebra_data" : "IsQuotientOfPathAlgebra\nVertices:\n1, 2, 3\nArrows:\na_1:1->2, a_2:2->3\nField:\nRationals\nRelations:\n(1)*a_1*a_2\n","number_arrows" : 2,"number_modules" : 5,"number_orbits" : 3,"number_vertices" : 3}`
+//func ReadJson2() {
+    //const rawTest = `{"algebra_data" : "IsQuotientOfPathAlgebra\nVertices:\n1, 2, 3\nArrows:\na_1:1->2, a_2:2->3\nField:\nRationals\nRelations:\n(1)*a_1*a_2\n","number_arrows" : 2,"number_modules" : 5,"number_orbits" : 3,"number_vertices" : 3}`
 
-    dec := json.NewDecoder(strings.NewReader(rawTest))
+    //dec := json.NewDecoder(strings.NewReader(rawTest))
 
-    //record := new(map[string]any);
+    ////record := new(map[string]any);
 
-    record := Algebra{};
+    //record := Algebra{};
 
-    dec.Decode(&record);
-    dec.Decode(&record);
-    dec.Decode(&record);
-    dec.Decode(&record);
-    dec.Decode(&record);
+    //dec.Decode(&record);
+    //dec.Decode(&record);
+    //dec.Decode(&record);
+    //dec.Decode(&record);
+    //dec.Decode(&record);
 
-    //for k, v := range *record {
-        //fmt.Printf("%T — %T\n", k, v)
-        //fmt.Printf("%v — %v\n", k, v)
-    //}
+    ////for k, v := range *record {
+        ////fmt.Printf("%T — %T\n", k, v)
+        ////fmt.Printf("%v — %v\n", k, v)
+    ////}
 
-    fmt.Print(record)
+    //fmt.Print(record)
     
-}
+//}
 
 // TODO: Read needs to be rewritten to account for new format
 

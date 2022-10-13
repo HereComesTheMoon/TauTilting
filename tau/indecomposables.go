@@ -22,13 +22,13 @@ import (
 //}
 
 type Indecomposable struct {
-    id int // id, for bookkeeping purposes
-    dimv []int // dimension vector
-    orbit int // Each orbit corresponds to a projective module, say P(orbit)
-    orbit_pos int // Orbit position. Now the indecomposable is isomorphic to \tau^{-orbit_pos} P(orbit)
-    pdim int // projective dimension
-    idim int // injective dimension
-    tau_rigidity []int // tau_rigidity[j] equals 0 if \Hom_A(M, \tau N) = 0, where M is the current indecomposable, and N is the indecomposable with id j. // Check if this is the case, might be flipped.
+    Id int // id, for bookkeeping purposes
+    Dim_vector []int // dimension vector
+    Orbit int // Each orbit corresponds to a projective module, say P(orbit)
+    Orbit_position int // Orbit position. Now the indecomposable is isomorphic to \tau^{-orbit_pos} P(orbit)
+    Proj_dim int // projective dimension
+    Inj_dim int // injective dimension
+    Tau_rigidity_row []int // tau_rigidity[j] equals 0 if \Hom_A(M, \tau N) = 0, where M is the current indecomposable, and N is the indecomposable with id j. // Check if this is the case, might be flipped.
 }
 
 
@@ -41,23 +41,23 @@ func (mods AllIndecomposables) SanityCheck() bool {
     //unique_ids := make(map[int]struct{})
     unique_ids := map[int]struct{}{}
     for _, m := range mods {
-        unique_ids[m.id] = struct{}{}
+        unique_ids[m.Id] = struct{}{}
     }
     all_ids_unique := len(unique_ids) == len(mods)
 
     // Check that each (orbit, orbit_pos) is unique
     unique_orbits := map[[2]int]struct{}{}
     for _, m := range mods {
-        o := [2]int{m.orbit, m.orbit_pos}
+        o := [2]int{m.Orbit, m.Orbit_position}
         unique_orbits[o] = struct{}{}
     }
     all_orbits_unique := len(unique_orbits) == len(mods)
 
     // Check that each dimv has the same length
-    num_vertices := len(mods[0].dimv)
+    num_vertices := len(mods[0].Dim_vector)
     all_same_number_of_vertices := true
     for _, m := range mods {
-        if len(m.dimv) != num_vertices {
+        if len(m.Dim_vector) != num_vertices {
             all_same_number_of_vertices = false
             break
         }
@@ -66,7 +66,7 @@ func (mods AllIndecomposables) SanityCheck() bool {
     // Check that the number of entries of tau_rigidity equals the number of modules
     number_tau_rigidity_relations_equals_number_modules := true
     for _, m := range mods {
-        if len(m.tau_rigidity) != len(mods) {
+        if len(m.Tau_rigidity_row) != len(mods) {
             number_tau_rigidity_relations_equals_number_modules = false
             break
         }
@@ -77,7 +77,7 @@ func (mods AllIndecomposables) SanityCheck() bool {
     // There is no idiomatic way. Convert to strings.
     dimvs := map[string]struct{}{}
     for _, m := range mods {
-        dimvs[fmt.Sprint(m.dimv)] = struct{}{}
+        dimvs[fmt.Sprint(m.Dim_vector)] = struct{}{}
     }
     all_dimvs_unique := len(dimvs) == len(mods)
 
@@ -95,13 +95,13 @@ func (mods AllIndecomposables) SanityCheck() bool {
         return res
     }
     for _, m := range mods {
-        if m.pdim == 0 {
+        if m.Proj_dim == 0 {
             number_projectives++
         }
-        if m.idim == 0 {
+        if m.Inj_dim == 0 {
             number_injectives++
         }
-        if sum(m.dimv) == 1 {
+        if sum(m.Dim_vector) == 1 {
             number_simples++
         }
     }
@@ -112,7 +112,7 @@ func (mods AllIndecomposables) SanityCheck() bool {
     // Warn if projective isn't orbit_pos == 0
     projectives_at_right_orbit_pos := true
     for _, m := range mods {
-        if m.pdim == 0 && m.orbit_pos != 0 {
+        if m.Proj_dim == 0 && m.Orbit_position != 0 {
             projectives_at_right_orbit_pos = false
             break
         }
@@ -169,13 +169,13 @@ func Get_indecomposables(folder string, number_vertices int) AllIndecomposables{
 
     for i := range dimvs {
         indec := Indecomposable{
-            id: i,
-            dimv: dimvs[i],
-            orbit: module_data[i][0],
-            orbit_pos: module_data[i][1],
-            pdim: module_data[i][2],
-            idim: module_data[i][3],
-            tau_rigidity: tau_rigidity_matrix[i],
+            Id: i,
+            Dim_vector: dimvs[i],
+            Orbit: module_data[i][0],
+            Orbit_position: module_data[i][1],
+            Proj_dim: module_data[i][2],
+            Inj_dim: module_data[i][3],
+            Tau_rigidity_row: tau_rigidity_matrix[i],
         }
         modules = append(modules, indec)
     }

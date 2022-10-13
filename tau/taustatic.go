@@ -81,7 +81,7 @@ func dimv_to_uint(dimv []int) uint {
 
 func Enumerate_tau_tilting_modules(modules AllIndecomposables, number_threads int, granularity int) []int {
     number_modules := len(modules)
-    number_vertices := len(modules[0].dimv)
+    number_vertices := len(modules[0].Dim_vector)
 
     // Adjacency matrix for our tau-rigidity graph
     adj := make([][]bool, 0, number_modules)
@@ -92,7 +92,7 @@ func Enumerate_tau_tilting_modules(modules AllIndecomposables, number_threads in
         for j := 0; j < number_modules; j++ {
             // Note the i < j. Enforces an order on our vertices, prevents loops and double counting
             // Otherwise, false if the direct sum of modules[i] and modules[j] is not \tau-rigid
-            if modules[i].tau_rigidity[j] != 0 || modules[j].tau_rigidity[i] != 0 {
+            if modules[i].Tau_rigidity_row[j] != 0 || modules[j].Tau_rigidity_row[i] != 0 {
                 adj[i][j] = false
             } else if i < j {
                 adj[i][j] = true
@@ -107,8 +107,8 @@ func Enumerate_tau_tilting_modules(modules AllIndecomposables, number_threads in
     ws := newWStack[Clique](number_modules)
 
     for i, m := range modules {
-        if i != m.id { log.Fatalf("i=%v != m.id=%v\n", i, m.id) }
-        uint_dimv := dimv_to_uint(m.dimv)
+        if i != m.Id { log.Fatalf("i=%v != m.id=%v\n", i, m.Id) }
+        uint_dimv := dimv_to_uint(m.Dim_vector)
 
         next_module := Clique{
             vertices: 1,
@@ -116,7 +116,7 @@ func Enumerate_tau_tilting_modules(modules AllIndecomposables, number_threads in
             dimv: uint_dimv,
         }
 
-        for id, tau_rigid := range adj[m.id] {
+        for id, tau_rigid := range adj[m.Id] {
             if tau_rigid { next_module.cnbrs = append(next_module.cnbrs, id) }
         }
 
@@ -229,7 +229,7 @@ func thread_enumerate_tau_tilting_modules(now Clique, p *parameters[Clique]) {
 
 func List_tau_tilting_modules(modules AllIndecomposables, number_threads int, granularity int) [][][]int {
     number_modules := len(modules)
-    number_vertices := len(modules[0].dimv)
+    number_vertices := len(modules[0].Dim_vector)
 
     t0 := time.Now()
     // Adjacency matrix for our tau-rigidity graph
@@ -241,7 +241,7 @@ func List_tau_tilting_modules(modules AllIndecomposables, number_threads int, gr
         for j := 0; j < number_modules; j++ {
             // Note the i < j. Enforces an order on our vertices, prevents loops and double counting
             // Otherwise, false if the direct sum of modules[i] and modules[j] is not \tau-rigid
-            if modules[i].tau_rigidity[j] != 0 || modules[j].tau_rigidity[i] != 0 {
+            if modules[i].Tau_rigidity_row[j] != 0 || modules[j].Tau_rigidity_row[i] != 0 {
                 adj[i][j] = false
             } else if i < j {
                 adj[i][j] = true
@@ -260,23 +260,23 @@ func List_tau_tilting_modules(modules AllIndecomposables, number_threads int, gr
     result[1] = make([][]int, 0, number_modules)
 
     for i, m := range modules {
-        if i != m.id { log.Fatalf("i=%v != m.id=%v\n", i, m.id) }
-        uint_dimv := dimv_to_uint(m.dimv)
+        if i != m.Id { log.Fatalf("i=%v != m.id=%v\n", i, m.Id) }
+        uint_dimv := dimv_to_uint(m.Dim_vector)
 
         next_module := CliqueFull{
-            vertices: []int{m.id},
+            vertices: []int{m.Id},
             cnbrs: make([]int, 0, number_modules - 1),
             dimv: uint_dimv,
         }
 
-        for id, tau_rigid := range adj[m.id] {
+        for id, tau_rigid := range adj[m.Id] {
             if tau_rigid { next_module.cnbrs = append(next_module.cnbrs, id) }
         }
 
         dimvs = append(dimvs, uint_dimv)
         ws.push(next_module)
         if bits.OnesCount(next_module.dimv) == len(next_module.vertices) {
-            result[1] = append(result[1], []int{m.id})
+            result[1] = append(result[1], []int{m.Id})
         }
     }
 
