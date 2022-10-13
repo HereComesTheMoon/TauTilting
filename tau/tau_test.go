@@ -16,8 +16,12 @@ func TestEnumerateLinearAnMod5(t *testing.T) {
     for k := 0; k < 10; k++ {
         fmt.Printf("Counting for %v.\n", loc + "alg_" + fmt.Sprint(k))
         //result := CountSTautiltingModulesStatic(locations[k])
-        modules := ReadJsonDataToAlgebra(fmt.Sprintf("%v/data_%d.json", loc, k + 1)).Indecomposables
-        result := Enumerate_tau_tilting_modules(modules, 8, 3)
+        alg := ReadJsonDataToAlgebra(fmt.Sprintf("%v/data_%d.json", loc, k + 1))
+        
+        if !alg.SanityCheck() {
+            t.Fatal("Modules did not pass sanity check!.")
+        }
+        result := Enumerate_tau_tilting_modules(alg.Indecomposables, 8, 3)
         
         fmt.Printf("WANTED: %v\n", wanted[k + 1])
         fmt.Printf("   GOT: %v\n", result)
@@ -39,7 +43,12 @@ func TestListLinearAnMod5(t *testing.T) {
     loc := "./test/LinearAnMod5/"
     for k := 0; k < 10; k++ {
         fmt.Printf("Counting for %v.\n", loc + "alg_" + fmt.Sprint(k))
-        modules := ReadJsonDataToAlgebra(fmt.Sprintf("%v/data_%d.json", loc, k + 1)).Indecomposables
+        alg := ReadJsonDataToAlgebra(fmt.Sprintf("%v/data_%d.json", loc, k + 1))
+        if !alg.SanityCheck() {
+            t.Fatal("Modules did not pass sanity check!.")
+        }
+        modules := alg.Indecomposables
+
         result_modules := List_tau_tilting_modules(modules, 8, 3)
 
         result := make([]int, len(result_modules))
