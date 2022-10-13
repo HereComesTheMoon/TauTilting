@@ -34,7 +34,18 @@ func main() {
         //iodata.WriteDiagonalsToCsv(loc + "DIAGONALS.csv", data)
     //}
 
-    tau.ReadJsonDataToAlgebra("./tau/test/LinearAnMod5/data_3.json")
+    alg := tau.ReadJsonDataToAlgebra("./tau/test/LinearAnMod5/data_5.json")
+    fmt.Printf("%+v", alg)
+
+    if !alg.SanityCheck() { panic(1) }
+
+    println("HELLO")
+
+    res := tau.Enumerate_tau_tilting_modules(alg.Indecomposables, 7, 3)
+
+    fmt.Printf("%v", res)
+
+
     //tau.ReadJson2()
 
 

@@ -71,13 +71,13 @@ ComputeAlgebra := function(folder, n, K)
         fi;
         orbits := [proj];
         data := [rec(
-                id := 1,
+                id := 0,
                 orbit := 1,
                 orbit_position := 0,
                 proj_dim := 0,
                 inj_dim := 0,
                 dim_vector := DimensionVector(proj[1]),
-                row := [1],
+                tau_rigidity_row := [1],
             )];
     else 
         orbits := ComputeOrbits(proj);
