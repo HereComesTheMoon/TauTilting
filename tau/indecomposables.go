@@ -2,7 +2,6 @@ package tau
 
 import (
 	"fmt"
-	//"graph/iodata"
 	"log"
 )
 
@@ -32,13 +31,21 @@ type Indecomposable struct {
 }
 
 
-type AllIndecomposables []Indecomposable
+type Algebra struct {
+    Algebra_data	string
+    Number_arrows	int
+    Number_modules	int
+    Number_orbits	int
+    Number_vertices	int
+    Indecomposables []Indecomposable
+}	
 
 
-
-func (mods AllIndecomposables) SanityCheck() bool {
+func (alg Algebra) SanityCheck() bool {
     // Check that each id is unique
     //unique_ids := make(map[int]struct{})
+    mods := alg.Indecomposables
+
     unique_ids := map[int]struct{}{}
     for _, m := range mods {
         unique_ids[m.Id] = struct{}{}
@@ -154,31 +161,31 @@ func (mods AllIndecomposables) SanityCheck() bool {
 }
 
 
-func Get_indecomposables(folder string, number_vertices int) AllIndecomposables{
-    loc := folder + "/alg_" + fmt.Sprint(number_vertices)
+//func Get_indecomposables(folder string, number_vertices int) AllIndecomposables {
+    //loc := folder + "/alg_" + fmt.Sprint(number_vertices)
 
-    dimvs := ReadCsvToSlice(loc + "_dimv.csv")
-    module_data := ReadCsvToSlice(loc + "_modules.csv")
-    tau_rigidity_matrix := ReadCsvToSlice(loc + "_rigiditymatrix.csv")
+    //dimvs := ReadCsvToSlice(loc + "_dimv.csv")
+    //module_data := ReadCsvToSlice(loc + "_modules.csv")
+    //tau_rigidity_matrix := ReadCsvToSlice(loc + "_rigiditymatrix.csv")
 
-    if len(dimvs) != len(module_data) {
-        log.Fatalf("%v != %v\n", len(dimvs), len(module_data))
-    }
+    //if len(dimvs) != len(module_data) {
+        //log.Fatalf("%v != %v\n", len(dimvs), len(module_data))
+    //}
 
-    modules := make(AllIndecomposables, 0, len(dimvs))
+    //modules := make(AllIndecomposables, 0, len(dimvs))
 
-    for i := range dimvs {
-        indec := Indecomposable{
-            Id: i,
-            Dim_vector: dimvs[i],
-            Orbit: module_data[i][0],
-            Orbit_position: module_data[i][1],
-            Proj_dim: module_data[i][2],
-            Inj_dim: module_data[i][3],
-            Tau_rigidity_row: tau_rigidity_matrix[i],
-        }
-        modules = append(modules, indec)
-    }
+    //for i := range dimvs {
+        //indec := Indecomposable{
+            //Id: i,
+            //Dim_vector: dimvs[i],
+            //Orbit: module_data[i][0],
+            //Orbit_position: module_data[i][1],
+            //Proj_dim: module_data[i][2],
+            //Inj_dim: module_data[i][3],
+            //Tau_rigidity_row: tau_rigidity_matrix[i],
+        //}
+        //modules = append(modules, indec)
+    //}
 
-    return modules
-}
+    //return modules
+//}

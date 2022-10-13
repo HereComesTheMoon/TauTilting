@@ -91,16 +91,13 @@ ComputeAlgebra := function(folder, n, K)
         number_orbits := Length(orbits),
         number_modules := Length(data),
         algebra_data := ReadAll(InputTextFile(output)),
-    );
-
-    results := rec(
-        algebra := data_algebra,
         indecomposables := data,
     );
 
+
     out_stream := OutputTextFile(Filename(Directory(folderInner), Concatenation("data_", String(n), ".json")), false);
 
-    GapToJsonStream(out_stream, results);
+    GapToJsonStream(out_stream, data_algebra);
     CloseStream(out_stream);
 end;
 

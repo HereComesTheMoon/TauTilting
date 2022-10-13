@@ -69,7 +69,7 @@ func TestEnumerateLinearAnMod5(t *testing.T) {
     for k := 0; k < 10; k++ {
         fmt.Printf("Counting for %v.\n", loc + "alg_" + fmt.Sprint(k))
         //result := CountSTautiltingModulesStatic(locations[k])
-        modules := Get_indecomposables(loc, k + 1)
+        modules := ReadJsonDataToAlgebra(fmt.Sprintf("%v/data_%d.json", loc, k + 1)).Indecomposables
         result := Enumerate_tau_tilting_modules(modules, 8, 3)
         
         fmt.Printf("WANTED: %v\n", wanted[k + 1])
@@ -93,7 +93,7 @@ func TestListLinearAnMod5(t *testing.T) {
     for k := 0; k < 10; k++ {
         fmt.Printf("Counting for %v.\n", loc + "alg_" + fmt.Sprint(k))
         //result := CountSTautiltingModulesStatic(locations[k])
-        modules := Get_indecomposables(loc, k + 1)
+        modules := ReadJsonDataToAlgebra(fmt.Sprintf("%v/data_%d.json", loc, k + 1)).Indecomposables
         result_modules := List_tau_tilting_modules(modules, 8, 3)
 
         result := make([]int, len(result_modules))

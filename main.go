@@ -34,7 +34,7 @@ func main() {
         //iodata.WriteDiagonalsToCsv(loc + "DIAGONALS.csv", data)
     //}
 
-    tau.TryJson("./tau/test/LinearAnMod5/data_3.json")
+    tau.ReadJsonDataToAlgebra("./tau/test/LinearAnMod5/data_3.json")
     //tau.ReadJson2()
 
 

@@ -79,7 +79,7 @@ func dimv_to_uint(dimv []int) uint {
     return result
 }
 
-func Enumerate_tau_tilting_modules(modules AllIndecomposables, number_threads int, granularity int) []int {
+func Enumerate_tau_tilting_modules(modules []Indecomposable, number_threads int, granularity int) []int {
     number_modules := len(modules)
     number_vertices := len(modules[0].Dim_vector)
 
@@ -227,7 +227,7 @@ func thread_enumerate_tau_tilting_modules(now Clique, p *parameters[Clique]) {
 }
 
 
-func List_tau_tilting_modules(modules AllIndecomposables, number_threads int, granularity int) [][][]int {
+func List_tau_tilting_modules(modules []Indecomposable, number_threads int, granularity int) [][][]int {
     number_modules := len(modules)
     number_vertices := len(modules[0].Dim_vector)
 

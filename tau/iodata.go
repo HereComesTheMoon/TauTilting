@@ -15,30 +15,8 @@ import (
 )
 
 
-type Algebra struct {
-    Algebra_data	string
-    Number_arrows	int
-    Number_modules	int
-    Number_orbits	int
-    Number_vertices	int
-}	
-
-type Indecs struct {
-    Id int // id, for bookkeeping purposes
-    Dim_vector []int // dimension vector
-    Orbit int // Each orbit corresponds to a projective module, say P(orbit)
-    Orbit_pos int // Orbit position. Now the indecomposable is isomorphic to \tau^{-orbit_pos} P(orbit)
-    Proj_dim int // projective dimension
-    Inj_dim int // injective dimension
-    //tau_rigidity []int // tau_rigidity[j] equals 0 if \Hom_A(M, \tau N) = 0, where M is the current indecomposable, and N is the indecomposable with id j. // Check if this is the case, might be flipped.
-}
-
-type dataBlock struct {
-    Algebra Algebra
-    Indecomposables []Indecomposable
-}
-
-func ReadJsonData(location string) {
+/// Read input data.json for an algebra
+func ReadJsonDataToAlgebra(location string) Algebra {
     f, err := os.Open(location)
 
     if err != nil {
@@ -47,12 +25,14 @@ func ReadJsonData(location string) {
 
     dec := json.NewDecoder(f)
 
-    chunk := dataBlock{}
+    alg := Algebra{}
 
-    dec.Decode(&chunk)
+    dec.Decode(&alg)
 
-    fmt.Printf("%+v", chunk)
+    return alg
 }
+
+
 
 //func ReadJson(location string) {
     //f, err := os.Open(location)
@@ -253,7 +233,7 @@ func initialiseTautiltingCsv(folder string) {
 
 // Given a folder, read in TAUTILTING.csv. Count the rows, then use Get_indecomposables() to read in alg_len_dimv.csv, alg_len_rigiditymatrix.csv, alg_len_modules.csv (from this folder), and compute the next row. Then append the row to the file, and save it. Also save DIAGONALS.csv, and DIAGONALS_PADDED.csv
 func ComputeNextRow(folder string, number_threads int, granularity int) {
-    tau_out := folder + "/TAUTILTING.csv" // Repeated slash may be turned into a single one. Slash="/" good here.
+    tau_out := folder + "/TAUTILTING.csv" 
     //diag_out := folder + "/DIAGONALS.csv"
     _, err := os.Stat(folder)
     if errors.Is(err, os.ErrNotExist) {
@@ -264,15 +244,15 @@ func ComputeNextRow(folder string, number_threads int, granularity int) {
         initialiseTautiltingCsv(folder)
     }
     // Else, actually compute the next row.
-    data := ReadCsvToSlice(tau_out)
-    next_modules := Get_indecomposables(folder, len(data))
+    already_computed_data := ReadCsvToSlice(tau_out)
+    next_modules := ReadJsonDataToAlgebra(fmt.Sprintf("%v/alg_%d.json", folder, len(already_computed_data))).Indecomposables
 
     t0 := time.Now().Truncate(time.Minute)
-    fmt.Printf("\nComputing algebra %v. It is now %v:%v.\n", len(data), t0.Hour(), t0.Minute())
+    fmt.Printf("\nComputing algebra %v. It is now %v:%v.\n", len(already_computed_data), t0.Hour(), t0.Minute())
     next_row := Enumerate_tau_tilting_modules(next_modules, number_threads, granularity)
 
-    data = append(data, next_row)
-    data = PadJaggedArray(data, len(next_row))
-    WriteSliceToCsv(tau_out, data)
+    already_computed_data = append(already_computed_data, next_row)
+    already_computed_data = PadJaggedArray(already_computed_data, len(next_row))
+    WriteSliceToCsv(tau_out, already_computed_data)
     return
 }
