@@ -16,7 +16,10 @@ func TestEnumerateLinearAnMod5(t *testing.T) {
     for k := 0; k < 10; k++ {
         fmt.Printf("Counting for %v.\n", loc + "alg_" + fmt.Sprint(k))
         //result := CountSTautiltingModulesStatic(locations[k])
-        alg := ReadJsonDataToAlgebra(fmt.Sprintf("%v/data_%d.json", loc, k + 1))
+        alg, err := ReadJsonDataToAlgebra(fmt.Sprintf("%v/data_%d.json", loc, k + 1))
+        if err != nil {
+            t.Fatal(err)
+        }
         
         if !alg.SanityCheck() {
             t.Fatal("Modules did not pass sanity check!.")
@@ -43,7 +46,10 @@ func TestListLinearAnMod5(t *testing.T) {
     loc := "./test/LinearAnMod5/"
     for k := 0; k < 10; k++ {
         fmt.Printf("Counting for %v.\n", loc + "alg_" + fmt.Sprint(k))
-        alg := ReadJsonDataToAlgebra(fmt.Sprintf("%v/data_%d.json", loc, k + 1))
+        alg, err := ReadJsonDataToAlgebra(fmt.Sprintf("%v/data_%d.json", loc, k + 1))
+        if err != nil {
+            t.Fatal(err)
+        }
         if !alg.SanityCheck() {
             t.Fatal("Modules did not pass sanity check!.")
         }

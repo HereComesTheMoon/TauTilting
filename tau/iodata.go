@@ -15,11 +15,11 @@ import (
 )
 
 /// Read input data.json for an algebra
-func ReadJsonDataToAlgebra(location string) Algebra {
+func ReadJsonDataToAlgebra(location string) (Algebra, error) {
     f, err := os.Open(location)
 
     if err != nil {
-        log.Fatal(err)
+        return Algebra{}, err
     }
 
     dec := json.NewDecoder(f)
@@ -28,7 +28,7 @@ func ReadJsonDataToAlgebra(location string) Algebra {
 
     dec.Decode(&alg)
 
-    return alg
+    return alg, nil
 }
 
 
@@ -120,7 +120,7 @@ func PadJaggedArray(arr [][]int, length int) [][]int {
 
 
 func initialiseResultsFile(folder string) {
-    i := 0
+    i := 1
     for ; i < 31; i++ {
         next_file_path := fmt.Sprint(folder, "/data_", i, ".json")
         fmt.Print(next_file_path)
@@ -140,11 +140,14 @@ func initialiseResultsFile(folder string) {
     for j := 0; j < i; j++ {
         new_tau = append(new_tau, make([]int, i))
     }
+    if i == 1 {
+        new_tau[0][0] = 1
+    }
     WriteSliceToCsv(folder + "/TAUTILTING.csv", new_tau)
 }
 
 // Given a folder, read in TAUTILTING.csv. Count the rows, then use ReadJsonDataToAlgebra() to read in data_k.json (from the same folder), and compute the next row. Then append the row to the file, and save it.
-func ComputeNextRow(folder string, number_threads int, granularity int) {
+func ComputeNextRow(folder string, number_threads int, granularity int) error {
     tau_out := folder + "/TAUTILTING.csv" 
 
     _, err := os.Stat(folder)
@@ -159,7 +162,17 @@ func ComputeNextRow(folder string, number_threads int, granularity int) {
 
     // Else, actually compute the next row.
     already_computed_data := ReadCsvToSlice(tau_out)
-    next_modules := ReadJsonDataToAlgebra(fmt.Sprintf("%v/data_%d.json", folder, len(already_computed_data))).Indecomposables
+    next_alg_data := fmt.Sprintf("%v/data_%d.json", folder, len(already_computed_data))
+    alg, err := ReadJsonDataToAlgebra(next_alg_data)
+
+    if errors.Is(err, os.ErrNotExist) {
+        log.Printf("File %v does not exist.", next_alg_data)
+        return err
+    }
+
+    next_modules := alg.Indecomposables
+
+
 
     t0 := time.Now().Truncate(time.Minute)
     fmt.Printf("\nComputing algebra %v. It is now %v:%v.\n", len(already_computed_data), t0.Hour(), t0.Minute())
@@ -167,6 +180,8 @@ func ComputeNextRow(folder string, number_threads int, granularity int) {
 
     already_computed_data = append(already_computed_data, next_row)
     already_computed_data = PadJaggedArray(already_computed_data, len(next_row))
+
     WriteSliceToCsv(tau_out, already_computed_data)
-    return
+    return nil
 }
+
