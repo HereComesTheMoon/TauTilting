@@ -1,6 +1,7 @@
 LoadPackage("qpa");
 LoadPackage("json");
 
+
 ComputeAlgebrasUpTo := function(folder, n, K)
     local k, nn, folderInner;
 
@@ -35,7 +36,7 @@ ComputeAlgebrasModK := function(folder, n, K)
         Exec(Concatenation("mkdir ", folderInner));
     fi;
 
-    for nn in [1..n] do
+    for nn in [2..n] do
         ComputeAlgebra(folder, nn, K);
     od;
 end;
@@ -63,11 +64,28 @@ ComputeAlgebra := function(folder, n, K)
 
 	proj := IndecProjectiveModules(A);
 
-    orbits := ComputeOrbits(proj);
+    # QPA struggles with the transpose of a module for the one vertex, zero arrows quiver
+    if NumberOfArrows(QuiverOfPathAlgebra(A)) = 0 then
+        if n <> 1 then
+            Error("Algebra with zero arrows, and more than one vertex. Disconnected.");
+        fi;
+        orbits := [proj];
+        data := [rec(
+                id := 1,
+                orbit := 1,
+                orbit_position := 0,
+                proj_dim := 0,
+                inj_dim := 0,
+                dim_vector := DimensionVector(proj[1]),
+            )];
+        tau_rigidity_matrix := [[1]];
+    else 
+        orbits := ComputeOrbits(proj);
 
-    data := ComputeModuleDataFromOrbits(orbits);
+        data := ComputeModuleDataFromOrbits(orbits);
 
-    tau_rigidity_matrix := ComputeTauRigidityMatrix(orbits);
+        tau_rigidity_matrix := ComputeTauRigidityMatrix(orbits);
+    fi;
 
     data_algebra := rec(
         number_vertices := NumberOfVertices(QuiverOfPathAlgebra(A)),
@@ -159,6 +177,7 @@ ComputeModuleDataFromOrbits := function(orbits)
 end;
 
 
+# Adjacency matrix whose (i,j) entry is 1 iff M_i \oplus M_j is tau-rigid, otherwise 0. M_i is the indecomposable module with id i.
 ComputeTauRigidityMatrix := function(orbits)
     local matrixSize, matrix, k, M, N, modules;
 
@@ -175,9 +194,9 @@ ComputeTauRigidityMatrix := function(orbits)
 		k := k+1;
 		for N in modules do
 			if HomOverAlgebra(M, DTr(N,1)) = [ ] then
-				Add(matrix[k], 0);
+				Add(matrix[k], 1); # Flipped from old code
 			else 
-				Add(matrix[k], 1);
+				Add(matrix[k], 0);
 			fi;
 		od;
 	od;
