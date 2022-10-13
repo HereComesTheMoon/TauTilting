@@ -92,7 +92,7 @@ func Enumerate_tau_tilting_modules(modules []Indecomposable, number_threads int,
         for j := 0; j < number_modules; j++ {
             // Note the i < j. Enforces an order on our vertices, prevents loops and double counting
             // Otherwise, false if the direct sum of modules[i] and modules[j] is not \tau-rigid
-            if modules[i].Tau_rigidity_row[j] != 0 || modules[j].Tau_rigidity_row[i] != 0 {
+            if modules[i].Tau_rigidity_row[j] == 0 || modules[j].Tau_rigidity_row[i] == 0 {
                 adj[i][j] = false
             } else if i < j {
                 adj[i][j] = true
@@ -127,6 +127,7 @@ func Enumerate_tau_tilting_modules(modules []Indecomposable, number_threads int,
     result := make([]int, number_vertices + 1)
     result[0] = 1 // To account for the 0-module
     result[1] = number_vertices
+
     mutex_result := sync.Mutex{}
 
     // Find cliques:
@@ -241,7 +242,7 @@ func List_tau_tilting_modules(modules []Indecomposable, number_threads int, gran
         for j := 0; j < number_modules; j++ {
             // Note the i < j. Enforces an order on our vertices, prevents loops and double counting
             // Otherwise, false if the direct sum of modules[i] and modules[j] is not \tau-rigid
-            if modules[i].Tau_rigidity_row[j] != 0 || modules[j].Tau_rigidity_row[i] != 0 {
+            if modules[i].Tau_rigidity_row[j] == 0 || modules[j].Tau_rigidity_row[i] == 0 {
                 adj[i][j] = false
             } else if i < j {
                 adj[i][j] = true
