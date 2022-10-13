@@ -9,24 +9,13 @@ import (
     //"os"
     "math/bits"
     "strconv"
-
-	//"graph/iodata"
-
-	//"github.com/yourbasic/graph"
 )
 
 
 
-// Refactorisation:
-// Main functions:
-// 1. enumerateTauForAlgebra([][]int rigidityMatrix, [][]int dimensionVectors, int numberThreads, int granularity)
-    //Have a few checks that rigidityMatrix and dimensionVectors match at all
-//2. Same as above, but given some file location, append to the corresponding output file
-//3. Actually return a slice containing all tau-tilting modules
-    //For this might as well implement an 'indecomposable' struct, containing the same information as the python and gap scripts, ie. id, dimension vector, orbit, orbit_representative
 
-// Clique object. Represents a basic tau-rigid module, but we don't store which summands the module has.
-// This makes the program twice as fast, roughly. (No deeper analysis was done, but it is definitely faster.)
+/// Clique object. Represents a basic tau-rigid module, but we don't store which summands the module has.
+/// This makes the program twice as fast, roughly. (No deeper analysis was done, but it is definitely faster.)
 type Clique struct {
     vertices int // Number of vertices
     cnbrs []int // Slice containing the IDs of all indecomposable modules X, such that Clique \oplus X is tau-rigid
@@ -34,7 +23,7 @@ type Clique struct {
 }
 
 
-// Clique object. Represents a basic tau-rigid module. 
+/// Clique object. Represents a basic tau-rigid module. 
 type CliqueFull struct {
     vertices []int // Slice containing the IDs of the indecomposable modules whose direct sum represents a specific basic tau-rigid module
     cnbrs []int // Slice containing the IDs of all indecomposable modules X, such that Clique \oplus X is tau-rigid
@@ -48,20 +37,6 @@ type parameters[T any] struct{
     thread_result []int
     ws *wStack[T]
     granularity int
-}
-
-func dimvSliceToUintStatic(dimvs [][]int) []uint {
-    result := make([]uint, len(dimvs))
-
-    for i, v := range dimvs {
-        for j, w := range v {
-            if w != 0 {
-                result[i] = result[i] | (1 << j)
-            }
-        }
-    }
-
-    return result
 }
 
 
@@ -100,7 +75,7 @@ func Enumerate_tau_tilting_modules(modules []Indecomposable, number_threads int,
         }
     }
 
-    // list of dimension vectors, stored as unsigned ints. Might not be exact, just stores at which vertices a number is non-zero
+    // The m-th bit of dimvs[id] is 1 iff module[id] is non-zero at vertex m
     dimvs := make([]uint, 0, number_modules)
 
     // new thread-safe WrappedStack, which will be used to store cliques
@@ -250,7 +225,7 @@ func List_tau_tilting_modules(modules []Indecomposable, number_threads int, gran
         }
     }
 
-    // list of dimension vectors, stored as unsigned ints. Might not be exact, just stores at which vertices a number is non-zero
+    // The m-th bit of dimvs[id] is 1 iff module[id] is non-zero at vertex m
     dimvs := make([]uint, 0, number_modules)
 
     // new thread-safe WrappedStack, which will be used to store cliques

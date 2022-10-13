@@ -23,10 +23,10 @@ func main() {
     //fmt.Printf("Results: %v\n", results)
     //trialRun2(1)
     //trialRun(1)
-    //loc := "./Data/14/Mod2/"
+    //loc := "./data/7/Mod5/"
     //data := make([][]int, 0) // iodata.ReadCsvToSlice(loc + "TAUTILTING.csv")
-    //data = iodata.ReadCsvToSlice(loc + "TAUTILTING.csv")
-    //iodata.WriteDiagonalsToCsv(loc + "DIAGONALS.csv", data)
+    //data = tau.ReadCsvToSlice(loc + "TAUTILTING.csv")
+    //tau.WriteDiagonalsToCsv(loc + "DIAGONALS.csv", data)
 
     //for k := 0; k < 30; k++ {
         //tau.AddRowCountSTautiltingModulesStatic(loc)
@@ -34,20 +34,23 @@ func main() {
         //iodata.WriteDiagonalsToCsv(loc + "DIAGONALS.csv", data)
     //}
 
-    alg := tau.ReadJsonDataToAlgebra("./tau/test/LinearAnMod5/data_5.json")
-    fmt.Printf("%+v", alg)
+    //alg := tau.ReadJsonDataToAlgebra("./tau/test/LinearAnMod5/data_5.json")
+    //fmt.Printf("%+v", alg)
 
-    if !alg.SanityCheck() { panic(1) }
+    //if !alg.SanityCheck() { panic(1) }
 
-    println("HELLO")
+    //println("HELLO")
 
-    res := tau.Enumerate_tau_tilting_modules(alg.Indecomposables, 7, 3)
+    //res := tau.Enumerate_tau_tilting_modules(alg.Indecomposables, 7, 3)
 
-    fmt.Printf("%v", res)
+    //fmt.Printf("%v", res)
 
 
     //tau.ReadJson2()
 
+    loc := "./data/7/Mod5/"
+    //tau.InitialiseResultsFile(loc)
+    tau.ComputeNextRow(loc, 8, 3)
 
     delta := time.Since(t0)
     fmt.Printf("Total process took %v seconds.\n", delta)
