@@ -6,14 +6,14 @@ import (
 	//"strconv"
 	"time"
 
-	//"graph/iodata"
+    "github.com/HereComesTheMoon/TauTilting/tau"
 )
 
 func main() {
     t0 := time.Now()
 
-    folder := "./Data/TEST/5/"
-    _ = folder;
+    //folder := "./Data/TEST/5/"
+    //_ = folder;
     //tau.ComputeNextRow(folder, 8, 3)
     //folder := "./Data/7/Mod5/"
     //modules := tau.Get_indecomposables(folder, 3)
@@ -33,6 +33,11 @@ func main() {
         //data = iodata.ReadCsvToSlice(loc + "TAUTILTING.csv")
         //iodata.WriteDiagonalsToCsv(loc + "DIAGONALS.csv", data)
     //}
+
+    tau.ReadJson("./tau/test/LinearAnMod2/data_3.json")
+    //tau.ReadJson2()
+
+
     delta := time.Since(t0)
     fmt.Printf("Total process took %v seconds.\n", delta)
 }

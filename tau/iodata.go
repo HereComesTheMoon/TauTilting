@@ -1,17 +1,120 @@
 package tau
 
 import (
-    "log"
-    "os"
-    "encoding/csv"
-    "strings"
-    "strconv"
-    "io"
-    "fmt"
-    "math"
-    "time"
-    "errors"
+	"encoding/csv"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
+	"log"
+	"math"
+	"os"
+	"strconv"
+	"strings"
+	"time"
 )
+
+
+type Algebra struct {
+    Algebra_data	string
+    Number_arrows	int
+    Number_modules	int
+    Number_orbits	int
+    Number_vertices	int
+}	
+
+type Indecs struct {
+    Id int // id, for bookkeeping purposes
+    Dim_vector []int // dimension vector
+    Orbit int // Each orbit corresponds to a projective module, say P(orbit)
+    Orbit_pos int // Orbit position. Now the indecomposable is isomorphic to \tau^{-orbit_pos} P(orbit)
+    Proj_dim int // projective dimension
+    Inj_dim int // injective dimension
+    //tau_rigidity []int // tau_rigidity[j] equals 0 if \Hom_A(M, \tau N) = 0, where M is the current indecomposable, and N is the indecomposable with id j. // Check if this is the case, might be flipped.
+}
+
+type dataBlock struct {
+    Algebra Algebra
+    Modules []Indecs
+    Matrix [][]bool
+}
+
+func ReadJson(location string) {
+    f, err := os.Open(location)
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    dec := json.NewDecoder(f)
+
+    chunk := dataBlock{}
+    //alg := Algebra{}
+
+    t, err := dec.Token()
+    if err != nil { log.Fatal(err) }
+    if t != json.Delim('{') { log.Fatalf("Got: '%v' of type %T. Expected: '{'", t, t)}
+
+    t, err = dec.Token()
+    if err != nil { log.Fatal(err) }
+    if t != "algebra" { log.Fatalf("Got: '%v' of type %T. Expected: 'algebra'", t, t)}
+
+    dec.Decode(&chunk.Algebra)
+    //fmt.Printf("%+v\n", chunk.Algebra)
+
+    t, err = dec.Token()
+    if err != nil { log.Fatal(err) }
+    if t != "modules" { log.Fatalf("Got: '%v' of type %T. Expected: 'modules'", t, t)}
+
+    chunk.Modules = make([]Indecs, 0, chunk.Algebra.Number_modules)
+
+    for i := 0; i < chunk.Algebra.Number_modules; i++ {
+        
+    }
+    dec.Decode(&chunk.Modules)
+    fmt.Printf("%+v\n", chunk.Modules)
+
+    //for i := 0; i < 2; i++ {
+        //t, err := dec.Token()
+        //if err != nil { log.Fatal(err) }
+        //fmt.Printf("%T: %v\n", t, t)
+    //}
+
+
+    //var alg_data Algebra
+    //err = dec.Decode(&alg_data)
+
+    //if err != nil {
+        //log.Fatal(err)
+    //}
+
+    
+    //fmt.Printf("%v", alg_data)
+}
+
+func ReadJson2() {
+    const rawTest = `{"algebra_data" : "IsQuotientOfPathAlgebra\nVertices:\n1, 2, 3\nArrows:\na_1:1->2, a_2:2->3\nField:\nRationals\nRelations:\n(1)*a_1*a_2\n","number_arrows" : 2,"number_modules" : 5,"number_orbits" : 3,"number_vertices" : 3}`
+
+    dec := json.NewDecoder(strings.NewReader(rawTest))
+
+    //record := new(map[string]any);
+
+    record := Algebra{};
+
+    dec.Decode(&record);
+    dec.Decode(&record);
+    dec.Decode(&record);
+    dec.Decode(&record);
+    dec.Decode(&record);
+
+    //for k, v := range *record {
+        //fmt.Printf("%T — %T\n", k, v)
+        //fmt.Printf("%v — %v\n", k, v)
+    //}
+
+    fmt.Print(record)
+    
+}
 
 // TODO: Read needs to be rewritten to account for new format
 
