@@ -62,6 +62,9 @@ ComputeAlgebra := function(folder, n, K)
     A := comp(n, K);
     SaveAlgebra(A, output, "delete");
 
+    # This here might seem useless, but due to a QPA bug(?) it IndecProjectiveModules(A) breaks without it
+    A := ReadAlgebra(output);
+
 	proj := IndecProjectiveModules(A);
 
     # QPA struggles with the transpose of a module for the one vertex, zero arrows quiver
