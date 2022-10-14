@@ -17,16 +17,14 @@ import (
 /// Read input data.json for an algebra
 func ReadJsonDataToAlgebra(location string) (Algebra, error) {
     f, err := os.Open(location)
-
-    if err != nil {
-        return Algebra{}, err
-    }
+    if err != nil { return Algebra{}, err }
 
     dec := json.NewDecoder(f)
 
     alg := Algebra{}
 
-    dec.Decode(&alg)
+    err = dec.Decode(&alg)
+    if err != nil { return Algebra{}, err }
 
     return alg, nil
 }
@@ -119,11 +117,11 @@ func PadJaggedArray(arr [][]int, length int) [][]int {
 }
 
 
-func initialiseResultsFile(folder string) {
+func InitialiseResultsFile(folder string) {
     i := 1
     for ; i < 31; i++ {
         next_file_path := fmt.Sprint(folder, "/data_", i, ".json")
-        fmt.Print(next_file_path)
+        //fmt.Print(next_file_path)
         _, err := os.Stat(next_file_path)
 
         if errors.Is(err, os.ErrNotExist) { continue }
@@ -157,7 +155,7 @@ func ComputeNextRow(folder string, number_threads int, granularity int) error {
     _, err = os.Stat(tau_out)
     if errors.Is(err, os.ErrNotExist) {
         fmt.Printf("No computations yet. Try to create file %v.", tau_out)
-        initialiseResultsFile(folder)
+        InitialiseResultsFile(folder)
     }
 
     // Else, actually compute the next row.
