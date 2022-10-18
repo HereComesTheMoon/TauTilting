@@ -1,0 +1,14 @@
+1. LinearHereditary: Linearly oriented Dynkin quiver of type An, hereditary. 
+    1 -> 2 -> 3 -> ... -> n
+2. Linear: Linearly oriented Dynkin quiver of type An, algebra: KQ/(KQ+)^K, where Q has n vertices
+    1 -> 2 -> 3 -> ... -> n
+3. AlmostLinear: 
+    1 <- 2 -> 3 -> ... -> n
+4. AlmostLinearB: 
+    1 <- 2 <- 3 -> ... -> n
+5. AlmostLinearC: 
+    1 -> 2 <- 3 -> ... -> n
+6. LinearRemovedRelation
+    1 -> 2 -> 3 -> ... -> n, all paths of length K set to 0, except the one starting at the first vertex
+7. LinearRemovedRelations
+    1 -> 2 -> 3 -> ... -> n, all paths of length K set to 0, except the ones starting at the first two vertices

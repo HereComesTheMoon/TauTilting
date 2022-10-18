@@ -1,0 +1,48 @@
+1:
+    The sequence of path algebras of the linearly oriented A_n quiver. n = 1,...,9
+
+2: LinearAnTModK
+    The sequence of algebras KQ/(KQ+)^K, where Q is the "almost linearly oriented" A_n quiver. The first arrow points left, all other arrows point right. (If the first arrow points right, all other arrows point left, then the result is the same.)
+
+3. 
+    The sequence of algebras KQ/(KQ+)^K, where Q is the "almost linearly oriented" A_n quiver. The first two arrows point left, all other arrows point right.
+
+4.
+    The sequence of algebras KQ/(KQ+)^K, where Q is the "almost linearly oriented" A_n quiver. The first arrow points right, the second arrow points left, all other arrows point right.
+
+5.
+    The sequence of canonically oriented algebras with underlying *Euclidean* quiver D_n^~, modulo the square of the radical, ie. KQ/(KQ+)^2
+6.
+    The sequence of algebras KQ/(KQ+)^K, where Q is the D_n Dynkin quiver. Orient them in four categories. Have 1, 2 both connected to 3.
+    a — 1->3->...->n-1, and 2->3
+    b — 1->3->...->n-1, and 2<-3
+    c — 1<-3<-...<-n-1, and 2->3
+    d — 1<-3<-...<-n-1, and 2<-3
+	Important: Results for a,d agree, and for b,c.
+HENCEFORTH: Store only a,d in 6, and store a under /ModK/
+		Store b,c in 6a, and store b under /ModK/
+7.
+    The sequence of KQ/(KQ+)^K, for Q = A_n
+8.
+	E_6, E_7, E_8
+
+9.
+    Dynkin Quiver + Added relation that composition of arrows in/out of vertex 3 are zero
+
+10.
+    Commutative square + A_n/ModK
+
+11.
+    Commutative square + A_n/ModK + Added relationship that those arrows crossing through the sink of vertex 4 and into A_n are zero
+
+12.
+	Linear A_n / Mod K, but the first relationship (involving the first arrow) is missing.
+
+13. 
+	Linear A_n / Mod K, but the first two relationships (involving the first and second arrow) are missing.
+
+14. Dual of commutative square + relations.
+
+15.
+	Euclidean A_n quiver, Nakayama algebra / Mod K.
+	This doesn't work. Program is not sophisticated enough for these computations.

@@ -1,0 +1,4 @@
+A:
+Commutative square with sink 4, and a linearly oriented An quiver attached to 4. All paths of length greater than K in the An part are 0.
+B:
+Commutative square with sink 4, and a linearly oriented An quiver attached to 4. All paths of length greater than K in the An part are 0. Also, all paths from inside the Commutative square into the An part (ie. crossing over 4) are zero

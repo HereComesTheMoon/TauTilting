@@ -1,0 +1,7 @@
+A: Dn Dynkin quiver, KQ/(KQ+)^K
+    1 -> 3 -> 4 -> ... -> n and 2 -> 3
+
+Euclidean:
+    Euclidean Dn quiver.
+    1 -> 3 -> 4 -> ... -> n and 2 -> 3, and n-1 -> n+1
+    Only taking Mod2 case! It's clear that the n=5 case is not representation finite for higher values
