@@ -12,13 +12,13 @@ import (
 
 func main() {
     t0 := time.Now()
-    loc := "./data/An/LinearRemovedRelation/Mod"
+    loc := "./data/CommutativeSquare/B/Mod"
 
 
-    //go ComputeData(loc + "3", 8, 3, false)
-    //go ComputeData(loc + "2", 8, 3, false)
-    ComputeData(loc + "5", 8, 3, false)
-    //ComputeData(loc + "2", 8, 3, false)
+    ComputeData(loc + "2", 7, 3, false)
+    ComputeData(loc + "3", 7, 3, false)
+    ComputeData(loc + "4", 7, 3, false)
+    ComputeData(loc + "5", 7, 3, false)
 
     //ComputeData("./data/Special/SkewedTriangle/Mod2", 8, 3, false)
 

@@ -25,8 +25,8 @@ SolAnAlmostLinear = Solution(
     m=0,
 )
 
-SolAlnAlmostLinearB = Solution(
-    location= DATA_FOLDER + "An/AlmostLinearB/",
+SolAnAlmostLinearC = Solution(
+    location= DATA_FOLDER + "An/AlmostLinearC/",
     hypo={
         2: "(1 + 4*x**3 + 5*x**4 - 2*x**5)*{F}",
         3: "(1 + 10*x**4 + 14*x**5 - 5*x**6 - 10*x**7)*{F}",
@@ -34,16 +34,16 @@ SolAlnAlmostLinearB = Solution(
         5: "(1 + 84*x**6 + 132*x**7 - 42*x**8 - 84*x**9 - 210*x**10 - 588*x**11)*{F}",
     },
     offset={
-        2: 0*4,
-        3: 0*5,
-        4: 0*6,
+        2: 1*4,
+        3: 1*5,
+        4: 1*6,
         5: 7,
     },
     n={
         2: 24,
         3: 23,
-        4: 17,
-        5: 18,
+        4: 18,
+        5: 19,
     },
     m=0,
 )
@@ -67,8 +67,8 @@ SolAnLinear = Solution(
         7: 0,
     },
     n={
-        2: 24,
-        3: 22,
+        2: 25,
+        3: 21,
         4: 20,
         5: 20,
         6: 20,
@@ -93,7 +93,7 @@ SolAnRemovedRelation = Solution(
     },
     n={
         2: 20,
-        3: 20, # XXX: Changed this on the 13.10.22 from 21 to 20
+        3: 20,
         4: 20,
         5: 20,
     },
@@ -109,16 +109,16 @@ SolAnRemovedRelations = Solution(
         5: "(1 + 84*x**6 + 132*x**7 - 42*x**8 - 84*x**9 - 210*x**10 - 588*x**11)*{F}",
     },
     offset={
-        2: 0*4,
-        3: 0*5,
-        4: 0*6,
+        2: 1*4,
+        3: 1*5,
+        4: 1*6,
         5: 7,
     },
     n={
         2: 24,
         3: 23,
-        4: 17,
-        5: 18,
+        4: 19,
+        5: 19,
     },
     m=0,
 )
@@ -132,14 +132,14 @@ SolDn = Solution(
         4: "(1 + 2*x**3 + 9*x**4 + 36*x**5 - 14*x**6 - 20*x**7 - 25*x**8)*{F}",
     },
     offset={
-        2: 0,
-        3: 0,
-        4: 0,
+        2: 2,
+        3: 4,
+        4: 9,
     },
     n={
         2: 24,
-        3: 21,
-        4: 19,
+        3: 23,
+        4: 20,
     },
     m=0,
 )
@@ -151,7 +151,7 @@ SolDnE = Solution(
         2: "(1 + 4*x**3 - 2*x**4 + 4*x**6 - 4*x**7 + x**8)*{F}",
     },
     offset={
-        2: 0,
+        2: 6,
     },
     n={
         2: 28,
@@ -175,7 +175,7 @@ SolCommutativeSquare = Solution(
     },
     n={
         2: 24,
-        3: 23,
+        3: 24,
         4: 22,
         5: 21,
     },
@@ -199,11 +199,20 @@ SolCommutativeSquareB = Solution(
     n={
         2: 24,
         3: 23,
-        4: 22,
-        5: 21,
+        4: 23,
+        5: 22,
     },
     m=4,
 )
 
 
-SolAnAlmostLinear.check_all()
+if __name__ == '__main__':
+    SolAnAlmostLinear.check_all()
+    SolAnAlmostLinearC.check_all()
+    SolAnLinear.check_all()
+    SolAnRemovedRelation.check_all()
+    SolAnRemovedRelations.check_all()
+    SolDn.check_all()
+    SolDnE.check_all()
+    SolCommutativeSquare.check_all()
+    SolCommutativeSquareB.check_all()

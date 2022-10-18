@@ -18,9 +18,9 @@ class Solution:
     def check_specific_M(self, M: int, verbose: bool = False) -> bool:
         """Check whether a hypothesis holds for a specific value of M. If there are mistakes, it will complain."""
         diags = check_and_read_diags_padded(self.location + f"/Mod{M}/")
-        result = True
 
         n = self.n[M] + 1
+        result = True
         for k in range(n):
             offset = max(self.offset[M] - (M-1)*k, 0)
             assert offset >= 0
@@ -35,9 +35,8 @@ class Solution:
 
             given = diag[offset:n]
             wanted = prediction[offset:]
-            if given != wanted:
-                result = False
             if given != wanted or verbose:
+                print(self.location)
                 output = tabulate(
                     [
                         [f"{M=}"] + list(range(n)),
@@ -48,14 +47,22 @@ class Solution:
                     ]
                 )
                 print(output)
+                print(given)
+                print(wanted)
+                result = False
         return result
 
     def check_all(self, verbose: bool = False):
         assert len(self.hypo) == len(self.offset) == len(self.n)
         assert self.hypo.keys() == self.offset.keys() == self.n.keys()
 
-        if all(self.check_specific_M(M, verbose) for M in self.hypo):
-            print(f"Sequence of algebras {self.location} passed.")
+        result = True
+        for M in self.hypo:
+            if self.check_specific_M(M, verbose):
+                print(f"Sequence of algebras {self.location}/Mod{M} passed.")
+            else:
+                result = False
+
 
     def find_solution(self, M: int) -> str:
         from sympy.abc import x
@@ -188,5 +195,6 @@ if __name__ == '__main__':
     # sol5.find_solution(2)
     # sol7.check_specific_M(7)
     # sol2.find_solution(2)
-    diags = check_and_read_diags_padded("../data/2/Mod2/")
-    find_best_recurrence(diags[0])
+    # diags = check_and_read_diags_padded("../data/2/Mod2/")
+    # find_best_recurrence(diags[0])
+    pass
